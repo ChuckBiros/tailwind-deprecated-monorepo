@@ -32,7 +32,7 @@ describe('regex utilities', () => {
 
       // Should match standalone class
       expect(regex.test('tw-badge')).toBe(true);
-      
+
       // Reset regex
       regex.lastIndex = 0;
       expect('tw-badge other-class'.match(regex)).toHaveLength(1);
@@ -88,5 +88,3 @@ describe('regex utilities', () => {
     });
   });
 });
-
-

@@ -40,7 +40,7 @@ describe('ClassDetector', () => {
       const usages = detector.findUsages(code, deprecatedClasses);
 
       expect(usages).toHaveLength(2);
-      expect(usages.map(u => u.className).sort()).toEqual(['legacy-style', 'old-button']);
+      expect(usages.map((u) => u.className).sort()).toEqual(['legacy-style', 'old-button']);
     });
 
     it('should not match non-deprecated classes', () => {
@@ -208,5 +208,3 @@ describe('ClassDetector', () => {
     });
   });
 });
-
-

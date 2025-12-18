@@ -39,7 +39,7 @@ describe('CssParser', () => {
       const result = parseCss(css, '/path/to/file.css');
 
       expect(result.classes).toHaveLength(2);
-      expect(result.classes.map(c => c.className)).toEqual(['old-button', 'legacy-card']);
+      expect(result.classes.map((c) => c.className)).toEqual(['old-button', 'legacy-card']);
     });
 
     it('should extract deprecated classes from grouped selectors', () => {
@@ -53,7 +53,7 @@ describe('CssParser', () => {
       const result = parseCss(css, '/path/to/file.css');
 
       expect(result.classes).toHaveLength(2);
-      expect(result.classes.map(c => c.className)).toEqual(['old-btn', 'legacy-btn']);
+      expect(result.classes.map((c) => c.className)).toEqual(['old-btn', 'legacy-btn']);
       expect(result.classes[0].message).toBe('Use .btn instead');
       expect(result.classes[1].message).toBe('Use .btn instead');
     });
@@ -102,7 +102,7 @@ describe('CssParser', () => {
 
       // Should find at least the old-variant class
       expect(result.classes.length).toBeGreaterThanOrEqual(1);
-      expect(result.classes.some(c => c.className === 'old-variant')).toBe(true);
+      expect(result.classes.some((c) => c.className === 'old-variant')).toBe(true);
     });
 
     it('should handle SCSS nested selectors in parent block', () => {
@@ -121,7 +121,7 @@ describe('CssParser', () => {
       // Both .button (parent) and .old-variant (nested) are found
       // because the deprecated property is inside the parent block
       expect(result.classes.length).toBeGreaterThanOrEqual(1);
-      expect(result.classes.some(c => c.className === 'old-variant')).toBe(true);
+      expect(result.classes.some((c) => c.className === 'old-variant')).toBe(true);
     });
 
     it('should handle class names with hyphens', () => {
@@ -184,4 +184,3 @@ describe('CssParser', () => {
     });
   });
 });
-
