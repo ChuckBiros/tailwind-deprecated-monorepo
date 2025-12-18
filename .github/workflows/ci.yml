@@ -27,7 +27,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-          cache-dependency-path: lsp-server/package-lock.json
+          cache-dependency-path: package-lock.json
       
       - name: Install dependencies
         working-directory: lsp-server
@@ -75,7 +75,7 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: lsp-server/package-lock.json
+          cache-dependency-path: package-lock.json
       
       - name: Install dependencies
         working-directory: lsp-server
@@ -115,7 +115,7 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: lsp-server/package-lock.json
+          cache-dependency-path: package-lock.json
       
       - name: Download LSP server artifacts
         uses: actions/download-artifact@v4
