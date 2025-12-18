@@ -43,7 +43,7 @@ export function toDiagnostic(usage: ClassUsage, severity: ConfigSeverity): Diagn
       start: { line: usage.line, character: usage.startChar },
       end: { line: usage.line, character: usage.endChar },
     },
-    message: `⚠️ Deprecated: ${usage.deprecatedInfo.message}`,
+    message: `Deprecated: ${usage.deprecatedInfo.message}`,
     source: DIAGNOSTIC_SOURCE,
     code: usage.className,
     data: {

@@ -78,21 +78,9 @@
             ]]></description>
         </server>
         
-        <!-- Language mappings -->
-        <languageMapping
-            language="HTML"
-            serverId="tailwindDeprecatedServer"/>
-        <languageMapping
-            language="JavaScript"
-            serverId="tailwindDeprecatedServer"/>
-        <languageMapping
-            language="TypeScript"
-            serverId="tailwindDeprecatedServer"/>
-        <languageMapping
-            language="Vue"
-            serverId="tailwindDeprecatedServer"/>
-        <languageMapping
-            language="CSS"
+        <!-- File name pattern mappings -->
+        <fileNamePatternMapping
+            patterns="*.html;*.htm;*.cshtml;*.razor;*.jsx;*.tsx;*.vue;*.css;*.scss;*.svelte;*.astro"
             serverId="tailwindDeprecatedServer"/>
     </extensions>
 

@@ -1,3 +1,6 @@
+import * as fs from 'fs';
+import * as path from 'path';
+
 import {
   createConnection,
   TextDocuments,
@@ -136,15 +139,20 @@ export class LspServer {
     );
 
     // Get workspace root
+    let initialRoot: string | null = null;
     if (params.workspaceFolders && params.workspaceFolders.length > 0) {
-      this.workspaceRoot = URI.parse(params.workspaceFolders[0].uri).fsPath;
+      initialRoot = URI.parse(params.workspaceFolders[0].uri).fsPath;
     } else if (params.rootUri) {
-      this.workspaceRoot = URI.parse(params.rootUri).fsPath;
+      initialRoot = URI.parse(params.rootUri).fsPath;
     } else if (params.rootPath) {
-      this.workspaceRoot = params.rootPath;
+      initialRoot = params.rootPath;
     }
 
-    this.logger.info(`Initialized. Workspace: ${this.workspaceRoot ?? 'none'}`);
+    // Find the actual project root (with tailwind.config.js or package.json)
+    this.workspaceRoot = initialRoot ? this.findProjectRoot(initialRoot) : null;
+
+    this.logger.info(`Initialized. Initial path: ${initialRoot ?? 'none'}`);
+    this.logger.info(`Resolved workspace: ${this.workspaceRoot ?? 'none'}`);
 
     return {
       capabilities: {
@@ -235,6 +243,57 @@ export class LspServer {
       default:
         return 'changed';
     }
+  }
+
+  /**
+   * Finds the actual project root by looking for tailwind.config.js or package.json.
+   * Traverses up the directory tree from the initial path.
+   */
+  private findProjectRoot(initialPath: string): string {
+    const indicators = [
+      'tailwind.config.js',
+      'tailwind.config.ts',
+      'tailwind.config.cjs',
+      'tailwind.config.mjs',
+      'package.json',
+    ];
+
+    let currentPath = initialPath;
+    const root = path.parse(currentPath).root;
+
+    // Try current path and parent directories
+    while (currentPath !== root) {
+      for (const indicator of indicators) {
+        const indicatorPath = path.join(currentPath, indicator);
+        if (fs.existsSync(indicatorPath)) {
+          this.logger.debug(`Found project indicator: ${indicatorPath}`);
+          return currentPath;
+        }
+      }
+
+      // Also check if this directory has CSS files in common locations
+      const cssLocations = ['assets', 'styles', 'css', 'src'];
+      for (const loc of cssLocations) {
+        const cssDir = path.join(currentPath, loc);
+        if (fs.existsSync(cssDir) && fs.statSync(cssDir).isDirectory()) {
+          const files = fs.readdirSync(cssDir).filter(f => f.endsWith('.css') || f.endsWith('.scss'));
+          if (files.length > 0) {
+            this.logger.debug(`Found CSS files in: ${cssDir}`);
+            return currentPath;
+          }
+        }
+      }
+
+      // Move up one level
+      const parentPath = path.dirname(currentPath);
+      if (parentPath === currentPath) {
+        break;
+      }
+      currentPath = parentPath;
+    }
+
+    // Fallback to initial path
+    return initialPath;
   }
 
   /**

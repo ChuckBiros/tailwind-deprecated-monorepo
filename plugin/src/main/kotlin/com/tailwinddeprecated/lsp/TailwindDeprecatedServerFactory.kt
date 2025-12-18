@@ -2,7 +2,6 @@ package com.tailwinddeprecated.lsp
 
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.util.io.FileUtil
 import com.redhat.devtools.lsp4ij.server.ProcessStreamConnectionProvider
 import com.redhat.devtools.lsp4ij.server.StreamConnectionProvider
 import com.redhat.devtools.lsp4ij.LanguageServerFactory
@@ -10,13 +9,9 @@ import com.tailwinddeprecated.util.NodeRunner
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.file.Files
-import java.nio.file.Path
 
 /**
  * Factory for creating the Tailwind Deprecated LSP server connection.
- * 
- * This factory is registered in plugin.xml and creates the connection
- * to the Node.js LSP server bundled with the plugin.
  */
 class TailwindDeprecatedServerFactory : LanguageServerFactory {
     
@@ -35,7 +30,8 @@ class TailwindDeprecatedConnectionProvider(
     companion object {
         private val LOG = Logger.getInstance(TailwindDeprecatedConnectionProvider::class.java)
         
-        // Lazy extraction of server files
+        // Lazy extraction of server file
+        @Volatile
         private var extractedServerPath: String? = null
         private val extractionLock = Any()
     }
@@ -80,100 +76,43 @@ class TailwindDeprecatedConnectionProvider(
             // Check if already extracted and valid
             extractedServerPath?.let { path ->
                 if (File(path).exists()) {
+                    LOG.info("Tailwind Deprecated LSP: Using cached server at $path")
                     return path
                 }
             }
             
             // Extract server to temp directory
             val tempDir = Files.createTempDirectory("tailwind-deprecated-lsp").toFile()
-            tempDir.deleteOnExit()
+            val serverFile = File(tempDir, "server.js")
             
-            LOG.info("Tailwind Deprecated LSP: Extracting server to $tempDir")
+            LOG.info("Tailwind Deprecated LSP: Extracting server to $serverFile")
             
             try {
-                extractResourceDirectory("server", tempDir)
+                // Extract the bundled server.js
+                val inputStream = this::class.java.classLoader.getResourceAsStream("server/server.js")
                 
-                val mainJsPath = File(tempDir, "server/main.js")
-                if (mainJsPath.exists()) {
-                    extractedServerPath = mainJsPath.absolutePath
+                if (inputStream != null) {
+                    inputStream.use { input ->
+                        FileOutputStream(serverFile).use { output ->
+                            input.copyTo(output)
+                        }
+                    }
+                    
+                    extractedServerPath = serverFile.absolutePath
+                    LOG.info("Tailwind Deprecated LSP: Server extracted successfully to $extractedServerPath")
                     return extractedServerPath
+                } else {
+                    LOG.error("Tailwind Deprecated LSP: server/server.js not found in resources")
+                    
+                    // List available resources for debugging
+                    val serverResource = this::class.java.classLoader.getResource("server")
+                    LOG.info("Tailwind Deprecated LSP: server resource = $serverResource")
                 }
-                
-                // Try alternative path
-                val altMainJsPath = File(tempDir, "main.js")
-                if (altMainJsPath.exists()) {
-                    extractedServerPath = altMainJsPath.absolutePath
-                    return extractedServerPath
-                }
-                
-                LOG.warn("Tailwind Deprecated LSP: main.js not found in extracted files")
-                LOG.warn("Tailwind Deprecated LSP: Contents of $tempDir: ${tempDir.listFiles()?.map { it.name }}")
-                
             } catch (e: Exception) {
                 LOG.error("Tailwind Deprecated LSP: Failed to extract server", e)
             }
             
             return null
-        }
-    }
-    
-    /**
-     * Extracts a resource directory from the JAR to a target directory.
-     */
-    private fun extractResourceDirectory(resourcePath: String, targetDir: File) {
-        val classLoader = this::class.java.classLoader
-        
-        // List of known files to extract
-        val filesToExtract = listOf(
-            "server/main.js",
-            "server/main.js.map",
-            "server/LspServer.js",
-            "server/index.js",
-            "server/adapters/DiagnosticAdapter.js",
-            "server/adapters/LspLogger.js",
-            "server/adapters/index.js",
-            "core/index.js",
-            "core/css/CssParser.js",
-            "core/css/CssScanner.js",
-            "core/css/index.js",
-            "core/detection/ClassDetector.js",
-            "core/detection/index.js",
-            "core/detection/patterns/ClassPattern.js",
-            "core/detection/patterns/PatternRegistry.js",
-            "core/detection/patterns/builtinPatterns.js",
-            "core/detection/patterns/index.js",
-            "core/cache/DeprecatedClassCache.js",
-            "core/cache/index.js",
-            "config/Settings.js",
-            "config/FileExtensions.js",
-            "config/index.js",
-            "types/index.js",
-            "types/DeprecatedClass.js",
-            "types/ClassUsage.js",
-            "types/DiagnosticResult.js",
-            "types/FileChange.js",
-            "utils/index.js",
-            "utils/regex.js",
-            "utils/logger.js",
-            "index.js"
-        )
-        
-        for (file in filesToExtract) {
-            val resourceName = "$resourcePath/$file"
-            val inputStream = classLoader.getResourceAsStream(resourceName)
-            
-            if (inputStream != null) {
-                val targetFile = File(targetDir, file)
-                targetFile.parentFile?.mkdirs()
-                
-                inputStream.use { input ->
-                    FileOutputStream(targetFile).use { output ->
-                        input.copyTo(output)
-                    }
-                }
-                
-                LOG.debug("Extracted: $resourceName -> $targetFile")
-            }
         }
     }
     

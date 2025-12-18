@@ -8,8 +8,9 @@
     "tailwind-deprecated-lsp": "./dist/server/main.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run bundle",
     "build:watch": "tsc -w",
+    "bundle": "esbuild dist/server/main.js --bundle --platform=node --target=node18 --outfile=dist/bundle/server.js --external:typescript",
     "start": "node dist/server/main.js --stdio",
     "dev": "tsx src/server/main.ts --stdio",
     "test": "vitest run",
@@ -42,6 +43,7 @@
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
     "@vitest/coverage-v8": "^2.0.0",
+    "esbuild": "^0.27.2",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.0",
@@ -54,4 +56,3 @@
     "node": ">=18.0.0"
   }
 }
-

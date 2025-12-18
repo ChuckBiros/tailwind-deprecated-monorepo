@@ -20,7 +20,7 @@ dependencies {
         rider("2023.3")
         
         // LSP4IJ plugin for LSP support
-        plugin("com.redhat.devtools.lsp4ij:0.0.2")
+        plugin("com.redhat.devtools.lsp4ij:0.5.0")
         
         pluginVerifier()
     }
@@ -64,21 +64,10 @@ intellijPlatform {
     }
 }
 
-// Task to copy the built LSP server to the plugin resources
+// Task to copy the bundled LSP server to the plugin resources
 tasks.register<Copy>("copyLspServer") {
-    from("../lsp-server/dist")
+    from("../lsp-server/dist/bundle/server.js")
     into("src/main/resources/server")
-    
-    // Also copy node_modules dependencies needed at runtime
-    from("../lsp-server/node_modules") {
-        into("node_modules")
-        include("**/package.json")
-        include("**/*.js")
-        include("**/*.json")
-        exclude("**/test/**")
-        exclude("**/*.ts")
-        exclude("**/tsconfig.json")
-    }
 }
 
 // Clean the copied server files
