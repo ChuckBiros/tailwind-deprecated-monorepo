@@ -59,10 +59,7 @@ jobs:
         working-directory: plugin
         run: ./gradlew buildPlugin --no-daemon
       
-      # Publish to JetBrains Marketplace (optional - requires JETBRAINS_MARKETPLACE_TOKEN secret)
       - name: Publish to JetBrains Marketplace
-        if: ${{ secrets.JETBRAINS_MARKETPLACE_TOKEN != '' }}
-        continue-on-error: true
         working-directory: plugin
         env:
           PUBLISH_TOKEN: ${{ secrets.JETBRAINS_MARKETPLACE_TOKEN }}
