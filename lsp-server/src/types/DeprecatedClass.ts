@@ -20,4 +20,3 @@ export interface DeprecatedClass {
  * A map of deprecated classes indexed by class name for O(1) lookup.
  */
 export type DeprecatedClassMap = ReadonlyMap<string, DeprecatedClass>;
-

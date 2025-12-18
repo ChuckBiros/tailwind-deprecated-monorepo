@@ -1,8 +1,9 @@
+import { noopLogger } from '../../utils/logger';
+import { parseCssFile } from '../css/CssScanner';
+
 import type { DeprecatedClass, DeprecatedClassMap } from '../../types/DeprecatedClass';
 import type { FileChangeEvent } from '../../types/FileChange';
 import type { Logger } from '../../utils/logger';
-import { noopLogger } from '../../utils/logger';
-import { parseCssFile } from '../css/CssScanner';
 
 /**
  * Event emitted when the cache is updated.
@@ -203,4 +204,3 @@ export class DeprecatedClassCache {
     }
   }
 }
-

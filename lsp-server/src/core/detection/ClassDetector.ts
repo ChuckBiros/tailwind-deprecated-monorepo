@@ -1,9 +1,9 @@
-import type { ClassUsage } from '../../types/ClassUsage';
-import type { DeprecatedClassMap } from '../../types/DeprecatedClass';
+import { defaultPatternRegistry, PatternRegistry } from './patterns/PatternRegistry';
 import { createWholeClassRegex } from '../../utils/regex';
 
 import type { ClassPattern, PatternMatch } from './patterns/ClassPattern';
-import { defaultPatternRegistry, PatternRegistry } from './patterns/PatternRegistry';
+import type { ClassUsage } from '../../types/ClassUsage';
+import type { DeprecatedClassMap } from '../../types/DeprecatedClass';
 
 /**
  * Options for the class detector.
@@ -233,4 +233,3 @@ export class ClassDetector {
  * Default class detector instance with built-in patterns.
  */
 export const defaultClassDetector = new ClassDetector();
-

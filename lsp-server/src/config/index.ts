@@ -11,4 +11,3 @@ export {
   getFileCategory,
   type FileCategory,
 } from './FileExtensions';
-

@@ -55,4 +55,3 @@ export function createPrefixedLogger(logger: Logger, prefix: string): Logger {
     error: (message, ...args) => logger.error(`[${prefix}] ${message}`, ...args),
   };
 }
-

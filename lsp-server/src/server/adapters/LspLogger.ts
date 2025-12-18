@@ -1,6 +1,5 @@
-import type { Connection } from 'vscode-languageserver/node';
-
 import type { Logger } from '../../utils/logger';
+import type { Connection } from 'vscode-languageserver/node';
 
 /**
  * Creates a Logger that writes to the LSP connection console.
@@ -51,4 +50,3 @@ function formatMessage(message: string, args: unknown[]): string {
 
   return `${message} ${formattedArgs}`;
 }
-

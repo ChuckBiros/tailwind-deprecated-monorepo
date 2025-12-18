@@ -12,4 +12,3 @@ export {
   type ClassPattern,
   type PatternMatch,
 } from './patterns';
-

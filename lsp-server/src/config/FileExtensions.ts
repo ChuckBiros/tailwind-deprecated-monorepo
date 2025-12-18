@@ -75,4 +75,3 @@ export function getFileCategory(filePath: string): FileCategory | undefined {
   }
   return undefined;
 }
-

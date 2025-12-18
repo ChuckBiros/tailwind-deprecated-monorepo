@@ -17,4 +17,3 @@ export {
 } from './builtinPatterns';
 
 export { PatternRegistry, defaultPatternRegistry } from './PatternRegistry';
-

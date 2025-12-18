@@ -145,4 +145,3 @@ function parseNestedParentSelectors(cssContent: string, sourceFile: string): Dep
 
   return result;
 }
-

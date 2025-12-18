@@ -7,4 +7,3 @@ export {
   type CacheUpdateEvent,
   type CacheUpdateListener,
 } from './DeprecatedClassCache';
-

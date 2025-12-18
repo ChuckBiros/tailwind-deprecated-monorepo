@@ -16,16 +16,16 @@ import {
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { URI } from 'vscode-uri';
 
-import { Settings, validateSettings } from '../config/Settings';
 import { shouldScanFile, isCssFile, getFileCategory } from '../config/FileExtensions';
-import { ClassDetector } from '../core/detection/ClassDetector';
+import { Settings, validateSettings } from '../config/Settings';
+import { toDiagnostics } from './adapters/DiagnosticAdapter';
+import { createLspLogger } from './adapters/LspLogger';
 import { DeprecatedClassCache } from '../core/cache/DeprecatedClassCache';
 import { scanCssFiles } from '../core/css/CssScanner';
-import type { Logger } from '../utils/logger';
-import type { FileChangeType } from '../types/FileChange';
+import { ClassDetector } from '../core/detection/ClassDetector';
 
-import { createLspLogger } from './adapters/LspLogger';
-import { toDiagnostics } from './adapters/DiagnosticAdapter';
+import type { FileChangeType } from '../types/FileChange';
+import type { Logger } from '../utils/logger';
 
 /**
  * The main LSP server class.
@@ -172,10 +172,7 @@ export class LspServer {
    */
   private async handleInitialized(): Promise<void> {
     if (this.hasConfigurationCapability) {
-      await this.connection.client.register(
-        DidChangeConfigurationNotification.type,
-        undefined
-      );
+      await this.connection.client.register(DidChangeConfigurationNotification.type, undefined);
     }
 
     // Register file watchers for CSS files
@@ -276,7 +273,9 @@ export class LspServer {
       for (const loc of cssLocations) {
         const cssDir = path.join(currentPath, loc);
         if (fs.existsSync(cssDir) && fs.statSync(cssDir).isDirectory()) {
-          const files = fs.readdirSync(cssDir).filter(f => f.endsWith('.css') || f.endsWith('.scss'));
+          const files = fs
+            .readdirSync(cssDir)
+            .filter((f) => f.endsWith('.css') || f.endsWith('.scss'));
           if (files.length > 0) {
             this.logger.debug(`Found CSS files in: ${cssDir}`);
             return currentPath;
@@ -352,20 +351,12 @@ export class LspServer {
     const fileCategory = getFileCategory(filePath);
 
     // Detect deprecated class usages
-    const usages = this.detector.findUsages(
-      text,
-      this.cache.getClasses(),
-      fileCategory
-    );
+    const usages = this.detector.findUsages(text, this.cache.getClasses(), fileCategory);
 
     // Convert to LSP diagnostics
-    const diagnostics = toDiagnostics(
-      usages,
-      this.settings.tailwindDeprecated.severity
-    );
+    const diagnostics = toDiagnostics(usages, this.settings.tailwindDeprecated.severity);
 
     // Send diagnostics
     this.connection.sendDiagnostics({ uri: document.uri, diagnostics });
   }
 }
-

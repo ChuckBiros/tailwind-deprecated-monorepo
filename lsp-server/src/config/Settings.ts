@@ -65,4 +65,3 @@ function validateExcludeDirs(dirs: readonly string[] | undefined): readonly stri
   }
   return dirs.filter((d) => typeof d === 'string' && d.length > 0);
 }
-

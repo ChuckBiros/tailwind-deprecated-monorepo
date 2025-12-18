@@ -18,4 +18,3 @@ export interface DiagnosticResult {
   /** Time taken to analyze the document in milliseconds */
   readonly analysisTimeMs?: number;
 }
-

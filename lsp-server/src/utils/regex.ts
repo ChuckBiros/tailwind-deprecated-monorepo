@@ -46,4 +46,3 @@ export function createWholeClassPattern(className: string): string {
 export function createWholeClassRegex(className: string, flags = 'g'): RegExp {
   return new RegExp(createWholeClassPattern(className), flags);
 }
-

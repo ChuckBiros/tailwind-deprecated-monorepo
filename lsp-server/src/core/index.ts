@@ -20,9 +20,4 @@ export {
 } from './detection';
 
 // Cache
-export {
-  DeprecatedClassCache,
-  type CacheUpdateEvent,
-  type CacheUpdateListener,
-} from './cache';
-
+export { DeprecatedClassCache, type CacheUpdateEvent, type CacheUpdateListener } from './cache';

@@ -2,11 +2,11 @@ import * as fs from 'fs';
 
 import fg from 'fast-glob';
 
-import type { DeprecatedClass, DeprecatedClassMap } from '../../types/DeprecatedClass';
-import type { Logger } from '../../utils/logger';
+import { parseCss } from './CssParser';
 import { noopLogger } from '../../utils/logger';
 
-import { parseCss } from './CssParser';
+import type { DeprecatedClass, DeprecatedClassMap } from '../../types/DeprecatedClass';
+import type { Logger } from '../../utils/logger';
 
 /**
  * Options for scanning CSS files.
@@ -95,4 +95,3 @@ export function parseCssFile(filePath: string, logger: Logger = noopLogger): Dep
     return [];
   }
 }
-

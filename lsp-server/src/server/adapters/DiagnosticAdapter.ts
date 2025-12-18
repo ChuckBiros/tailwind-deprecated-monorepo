@@ -1,7 +1,7 @@
 import { Diagnostic, DiagnosticSeverity } from 'vscode-languageserver/node';
 
-import type { DiagnosticSeverity as ConfigSeverity } from '../../types/DiagnosticResult';
 import type { ClassUsage } from '../../types/ClassUsage';
+import type { DiagnosticSeverity as ConfigSeverity } from '../../types/DiagnosticResult';
 
 /**
  * Source identifier for diagnostics produced by this extension.
@@ -60,7 +60,9 @@ export function toDiagnostic(usage: ClassUsage, severity: ConfigSeverity): Diagn
  * @param severity - The severity level to use
  * @returns Array of LSP Diagnostics
  */
-export function toDiagnostics(usages: readonly ClassUsage[], severity: ConfigSeverity): Diagnostic[] {
+export function toDiagnostics(
+  usages: readonly ClassUsage[],
+  severity: ConfigSeverity
+): Diagnostic[] {
   return usages.map((usage) => toDiagnostic(usage, severity));
 }
-

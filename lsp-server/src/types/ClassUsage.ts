@@ -20,4 +20,3 @@ export interface ClassUsage {
   /** The deprecation metadata for this class */
   readonly deprecatedInfo: DeprecatedClass;
 }
-

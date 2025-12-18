@@ -47,7 +47,11 @@ export {
 } from './core/detection';
 
 // Core - Cache
-export { DeprecatedClassCache, type CacheUpdateEvent, type CacheUpdateListener } from './core/cache';
+export {
+  DeprecatedClassCache,
+  type CacheUpdateEvent,
+  type CacheUpdateListener,
+} from './core/cache';
 
 // Utilities
 export {
@@ -60,4 +64,3 @@ export {
   type Logger,
   type LogLevel,
 } from './utils';
-

@@ -13,4 +13,3 @@ export interface FileChangeEvent {
   /** Type of change */
   readonly type: FileChangeType;
 }
-

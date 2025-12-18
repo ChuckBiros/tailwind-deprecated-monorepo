@@ -10,4 +10,3 @@ export {
   type Logger,
   type LogLevel,
 } from './logger';
-

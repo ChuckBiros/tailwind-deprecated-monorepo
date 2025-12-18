@@ -10,4 +10,3 @@ export {
   toDiagnostic,
   toDiagnostics,
 } from './adapters/DiagnosticAdapter';
-

@@ -1,5 +1,6 @@
-import type { ClassPattern } from './ClassPattern';
 import { builtinPatterns } from './builtinPatterns';
+
+import type { ClassPattern } from './ClassPattern';
 
 /**
  * Registry for class detection patterns.
@@ -91,4 +92,3 @@ export class PatternRegistry {
  * Default pattern registry with all built-in patterns.
  */
 export const defaultPatternRegistry = new PatternRegistry(true);
-

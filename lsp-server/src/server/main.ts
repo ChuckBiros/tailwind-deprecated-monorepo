@@ -20,4 +20,3 @@ process.on('SIGINT', () => {
 // Start the server
 const server = new LspServer();
 server.start();
-
