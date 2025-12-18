@@ -1,7 +1,7 @@
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.9.21"
-    id("org.jetbrains.intellij") version "1.17.0"
+    id("org.jetbrains.intellij.platform") version "2.2.1"
 }
 
 group = "com.tailwinddeprecated"
@@ -9,47 +9,58 @@ version = "1.0.0"
 
 repositories {
     mavenCentral()
+    
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
-// Configure Gradle IntelliJ Plugin
-intellij {
-    version.set("2023.3")
-    type.set("RD") // Rider
-    
-    plugins.set(listOf(
-        "com.redhat.devtools.lsp4ij:0.0.2" // LSP4IJ plugin
-    ))
+dependencies {
+    intellijPlatform {
+        rider("2023.3")
+        
+        // LSP4IJ plugin for LSP support
+        plugin("com.redhat.devtools.lsp4ij:0.0.2")
+        
+        pluginVerifier()
+    }
 }
 
-tasks {
-    // Set the JVM compatibility versions
-    withType<JavaCompile> {
-        sourceCompatibility = "17"
-        targetCompatibility = "17"
+kotlin {
+    jvmToolchain(17)
+}
+
+intellijPlatform {
+    pluginConfiguration {
+        id = "com.tailwinddeprecated.plugin"
+        name = "Tailwind Deprecated"
+        version = project.version.toString()
+        
+        ideaVersion {
+            sinceBuild = "233"
+            untilBuild = "243.*"
+        }
+        
+        vendor {
+            name = "ChuckBiros"
+            url = "https://github.com/ChuckBiros/tailwind-deprecated-monorepo"
+        }
     }
     
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "17"
-    }
-
-    patchPluginXml {
-        sinceBuild.set("233")
-        untilBuild.set("243.*")
-    }
-
-    signPlugin {
-        certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
-        privateKey.set(System.getenv("PRIVATE_KEY"))
-        password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
-    }
-
-    publishPlugin {
-        token.set(System.getenv("PUBLISH_TOKEN"))
+    signing {
+        certificateChain = providers.environmentVariable("CERTIFICATE_CHAIN")
+        privateKey = providers.environmentVariable("PRIVATE_KEY")
+        password = providers.environmentVariable("PRIVATE_KEY_PASSWORD")
     }
     
-    // Copy the LSP server to resources before building
-    processResources {
-        dependsOn(":copyLspServer")
+    publishing {
+        token = providers.environmentVariable("PUBLISH_TOKEN")
+    }
+    
+    pluginVerification {
+        ides {
+            recommended()
+        }
     }
 }
 
@@ -79,3 +90,6 @@ tasks.named("clean") {
     dependsOn("cleanLspServer")
 }
 
+tasks.named("processResources") {
+    dependsOn("copyLspServer")
+}

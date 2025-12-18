@@ -1,6 +1,6 @@
 # Tailwind Deprecated Plugin
 
-[![CI](https://github.com/your-org/tailwind-deprecated/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/tailwind-deprecated/actions/workflows/ci.yml)
+[![CI](https://github.com/ChuckBiros/tailwind-deprecated/actions/workflows/ci.yml/badge.svg)](https://github.com/ChuckBiros/tailwind-deprecated/actions/workflows/ci.yml)
 [![JetBrains Plugin](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
 
 A JetBrains plugin that detects and highlights deprecated Tailwind CSS custom classes in your code. Perfect for teams migrating from legacy CSS classes to new design system components.
@@ -23,7 +23,7 @@ A JetBrains plugin that detects and highlights deprecated Tailwind CSS custom cl
 
 ### Manual Installation
 
-1. Download the latest `.zip` from [Releases](https://github.com/your-org/tailwind-deprecated/releases)
+1. Download the latest `.zip` from [Releases](https://github.com/ChuckBiros/tailwind-deprecated/releases)
 2. Open Rider → Settings → Plugins → ⚙️ → Install Plugin from Disk
 3. Select the downloaded `.zip` file
 4. Restart the IDE
@@ -111,7 +111,7 @@ Access settings via: **Settings → Tools → Tailwind Deprecated**
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/tailwind-deprecated.git
+git clone https://github.com/ChuckBiros/tailwind-deprecated.git
 cd tailwind-deprecated
 
 # Install LSP server dependencies
