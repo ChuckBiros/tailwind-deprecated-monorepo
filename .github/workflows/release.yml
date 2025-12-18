@@ -60,6 +60,9 @@ jobs:
         run: ./gradlew buildPlugin --no-daemon
       
       - name: Publish to JetBrains Marketplace
+        # Note: La première publication doit être faite manuellement sur https://plugins.jetbrains.com/
+        # Une fois le plugin approuvé, cette étape fonctionnera automatiquement
+        continue-on-error: true
         working-directory: plugin
         env:
           PUBLISH_TOKEN: ${{ secrets.JETBRAINS_MARKETPLACE_TOKEN }}
