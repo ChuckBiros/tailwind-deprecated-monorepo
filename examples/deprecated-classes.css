@@ -1,0 +1,80 @@
+/**
+ * Exemple de fichier CSS avec des classes Tailwind custom dépréciées
+ * 
+ * Pour marquer une classe comme dépréciée, ajoutez la propriété CSS custom:
+ * --deprecated: "Message de warning à afficher";
+ */
+
+/* Exemple 1: Badge ancien style */
+.tw-badge-old {
+  --deprecated: "WARNING: Use .tw-badge-{type}-{size} instead";
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  background-color: #e5e7eb;
+  border-radius: 0.25rem;
+}
+
+/* Exemple 2: Bouton legacy */
+.btn-legacy {
+  --deprecated: "Cette classe est obsolète. Utilisez .tw-button-primary à la place.";
+  padding: 0.5rem 1rem;
+  background-color: #3b82f6;
+  color: white;
+  border-radius: 0.375rem;
+}
+
+/* Exemple 3: Container ancien */
+.old-container {
+  --deprecated: "Remplacez par .tw-container-responsive pour un meilleur support responsive.";
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Exemple 4: Classe de texte dépréciée */
+.text-custom-blue {
+  --deprecated: "Utilisez les classes Tailwind natives: text-blue-500, text-blue-600, etc.";
+  color: #2563eb;
+}
+
+/* Exemple 5: Classe avec @apply (syntaxe Tailwind) */
+.tw-badges-l {
+  --deprecated: "WARNING: Use .tw-badge-{type}-l instead";
+  @apply
+    tw-rounded-sm
+    tw-h-10
+    tw-w-10
+    tw-p-3;
+}
+
+/* Exemple 6: Autre badge avec @apply */
+.tw-badges-m {
+  --deprecated: "WARNING: Use .tw-badge-{type}-m instead";
+  @apply tw-rounded-sm tw-h-8 tw-w-8 tw-p-2;
+}
+
+/* Classes valides (non dépréciées) - pas de warning */
+.tw-badge-primary-sm {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.375rem;
+  background-color: #3b82f6;
+  color: white;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.tw-button-primary {
+  padding: 0.5rem 1rem;
+  background-color: #3b82f6;
+  color: white;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.tw-button-primary:hover {
+  background-color: #2563eb;
+}
+

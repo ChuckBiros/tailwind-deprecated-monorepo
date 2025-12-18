@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemple d'utilisation</title>
+    <link rel="stylesheet" href="deprecated-classes.css">
+</head>
+<body>
+    <!-- Ces classes devraient afficher un warning -->
+    <span class="tw-badge-old">Badge ancien</span>
+    <button class="btn-legacy">Bouton Legacy</button>
+    <div class="old-container">
+        <p class="text-custom-blue">Texte en bleu custom</p>
+    </div>
+
+    <!-- Classes multiples avec certaines dépréciées -->
+    <div class="flex items-center tw-badge-old p-4">
+        Mélange de classes
+    </div>
+
+    <!-- Ces classes sont OK - pas de warning -->
+    <span class="tw-badge-primary-sm">Nouveau badge</span>
+    <button class="tw-button-primary">Nouveau bouton</button>
+</body>
+</html>
+

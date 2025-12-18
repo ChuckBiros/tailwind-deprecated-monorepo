@@ -1,0 +1,46 @@
+{
+  "name": "tailwind-deprecated-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "JetBrains plugin to detect deprecated Tailwind CSS custom classes",
+  "workspaces": [
+    "lsp-server"
+  ],
+  "scripts": {
+    "build": "npm run build -w lsp-server",
+    "build:all": "npm run build -w lsp-server && cd plugin && ./gradlew buildPlugin",
+    "test": "npm run test -w lsp-server",
+    "test:coverage": "npm run test:coverage -w lsp-server",
+    "lint": "npm run lint -w lsp-server",
+    "lint:fix": "npm run lint:fix -w lsp-server",
+    "format": "npm run format -w lsp-server",
+    "format:check": "npm run format:check -w lsp-server",
+    "prepare": "node -e \"try { require('husky').install() } catch (e) { if (e.code !== 'MODULE_NOT_FOUND') throw e }\"",
+    "precommit": "lint-staged"
+  },
+  "keywords": [
+    "tailwind",
+    "css",
+    "lsp",
+    "deprecated",
+    "jetbrains",
+    "rider",
+    "intellij",
+    "plugin"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "husky": "^9.0.0",
+    "lint-staged": "^15.2.0"
+  },
+  "lint-staged": {
+    "lsp-server/src/**/*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

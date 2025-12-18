@@ -1,0 +1,27 @@
+@* Exemple de fichier Razor (.cshtml) avec des classes dépréciées *@
+@model MyViewModel
+
+<div class="container">
+    @* Ces classes devraient afficher un warning *@
+    <span class="tw-badge-old">Badge ancien</span>
+    <button class="btn-legacy">Cliquez-moi</button>
+    
+    @* Classes avec @apply style *@
+    <div class="tw-badges-l">Grande icône</div>
+    <div class="tw-badges-m">Moyenne icône</div>
+    
+    @* Mélange de classes - seules les dépréciées auront un warning *@
+    <div class="flex items-center old-container p-4">
+        <p class="text-custom-blue">Texte en bleu custom</p>
+    </div>
+    
+    @* Razor avec expression conditionnelle *@
+    <div class="@(isActive ? "tw-badge-old" : "tw-badge-primary-sm")">
+        Conditionnel
+    </div>
+    
+    @* Ces classes sont OK - pas de warning *@
+    <span class="tw-badge-primary-sm">Nouveau badge</span>
+    <button class="tw-button-primary">Nouveau bouton</button>
+</div>
+
