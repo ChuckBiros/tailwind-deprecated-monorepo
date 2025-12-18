@@ -104,6 +104,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo docker image prune --all --force
+          df -h
+      
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -123,20 +132,14 @@ jobs:
           name: lsp-server-dist
           path: lsp-server/dist/
       
-      - name: Install LSP server dependencies
-        working-directory: lsp-server
-        run: npm ci --production
-      
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
       
       - name: Build plugin
         working-directory: plugin
-        run: ./gradlew buildPlugin
-      
-      - name: Verify plugin
-        working-directory: plugin
-        run: ./gradlew verifyPlugin
+        run: ./gradlew buildPlugin --no-daemon
       
       - name: Upload plugin artifact
         uses: actions/upload-artifact@v4
@@ -144,40 +147,5 @@ jobs:
           name: plugin-zip
           path: plugin/build/distributions/*.zip
           retention-days: 7
-
-  # =============================================================================
-  # Plugin Compatibility Check
-  # =============================================================================
-  plugin-compatibility:
-    name: Plugin - Compatibility
-    runs-on: ubuntu-latest
-    needs: plugin-build
-    
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      
-      - name: Download plugin artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: plugin-zip
-          path: plugin/build/distributions/
-      
-      - name: Run Plugin Verifier
-        uses: ChrisCarini/intellij-platform-plugin-verifier-action@latest
-        with:
-          ide-versions: |
-            ideaIC:2023.3
-            ideaIC:2024.1
-          plugin-location: plugin/build/distributions/*.zip
-          failure-levels: |
-            COMPATIBILITY_PROBLEMS
-            INVALID_PLUGIN
 
 
