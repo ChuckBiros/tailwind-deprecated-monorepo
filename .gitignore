@@ -38,10 +38,8 @@ coverage/
 # =============================================================================
 plugin/.gradle/
 plugin/build/
-plugin/gradle/wrapper/
-plugin/gradlew
-plugin/gradlew.bat
 .gradle/
+# Note: gradlew, gradlew.bat et gradle/wrapper/ sont volontairement inclus pour la CI
 
 # =============================================================================
 # Plugin resources (generated)
