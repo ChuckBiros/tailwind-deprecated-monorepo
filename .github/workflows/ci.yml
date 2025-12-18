@@ -41,7 +41,7 @@ jobs:
         run: npm run format:check -w lsp-server
       
       - name: Run tests
-        run: npm run test:coverage -w lsp-server
+        run: npm test -w lsp-server
       
       - name: Build
         run: npm run build -w lsp-server
